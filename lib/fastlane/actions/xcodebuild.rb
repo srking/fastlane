@@ -190,7 +190,9 @@ module Fastlane
         end
 
         # Stdout format
-        if testing && !archiving
+        if params && params[:format]
+          xcpretty_args.push "--#{params[:format]}"
+        elsif testing && !archiving
           xcpretty_args.push "--test"
         else
           xcpretty_args.push "--simple"
