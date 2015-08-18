@@ -20,6 +20,33 @@ require 'fastlane_core'
 module Fastlane
   Helper = FastlaneCore::Helper # you gotta love Ruby: Helper.* should use the Helper class contained in FastlaneCore
 
+  module Helper
+    def self.log
+      @@log ||= Logger.new($stdout)
+
+      @@log.formatter = proc do |severity, datetime, progname, msg|
+        string = "#{severity}: "
+        second = "#{msg}\n"
+
+        if severity == "DEBUG"
+          string = string.magenta
+        elsif severity == "INFO"
+          string = string.white
+        elsif severity == "WARN"
+          string = string.yellow
+        elsif severity == "ERROR"
+          string = string.red
+        elsif severity == "FATAL"
+          string = string.red.bold
+        end
+
+        [string, second].join("")
+      end
+
+      @@log
+    end
+  end
+
   Fastlane::Actions.load_default_actions
 
   if Fastlane::FastlaneFolder.path
