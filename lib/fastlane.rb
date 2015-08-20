@@ -25,7 +25,8 @@ module Fastlane
       @@log ||= Logger.new($stdout)
 
       @@log.formatter = proc do |severity, datetime, progname, msg|
-        string = "#{severity}: "
+        string = "#{severity} [#{datetime.strftime('%Y-%m-%d %H:%M:%S.%2N')}]: " if $verbose
+        string = "#{severity}: " unless $verbose
         second = "#{msg}\n"
 
         if severity == "DEBUG"
